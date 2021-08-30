@@ -40,4 +40,16 @@ Si no, el color deberá devolver es VERDE.
 
 GET /muestras/boyas/{idBoya} 	=> devuelve la lista de muestras de una boya.
 
-DELETE /muestras/{id}: 		=> Reseteara el color de la luz de la boya a “AZUL” a partir de una  muestra específica.
+DELETE /muestras/{id} 		=> Reseteara el color de la luz de la boya a “AZUL” a partir de una  muestra específica.
+
+GET /muestras/colores/{color} 	=> devuelve la lista de muestras de un color en el siguiente formato JSON Array:
+			[{
+				“boyaId”: 1232,
+				“horario”: “2020-08-05T20:20:10”,
+				“alturaNivelDelMar”: 29
+			 },
+			 {
+				“boyaId”: 124,
+				“horario”: “2020-08-01T20:22:10”,
+				“alturaNivelDelMar”: 55
+			}]
