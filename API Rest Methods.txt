@@ -53,3 +53,10 @@ GET /muestras/colores/{color} 	=> devuelve la lista de muestras de un color en e
 				“horario”: “2020-08-01T20:22:10”,
 				“alturaNivelDelMar”: 55
 			}]
+
+GET /muestras/minima/{idBoya} 	=> devuelve la muestra donde la altura nivel del mar sea la minima para una boya en particular en este formato JSON.
+			{
+				“color”: “ROJO”, //El color actual de la boya
+				“alturaNivelDelMarMinima”: 45,
+				“horario”: “2020-08-04T10:02:02”
+			}
