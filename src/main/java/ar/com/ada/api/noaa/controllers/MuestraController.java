@@ -5,10 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ar.com.ada.api.noaa.models.request.NuevaMuestraRequest;
-import ar.com.ada.api.noaa.models.response.GenericResponse;
-import ar.com.ada.api.noaa.models.response.MuestraResponse;
+import ar.com.ada.api.noaa.models.response.*;
 import ar.com.ada.api.noaa.services.*;
 import ar.com.ada.api.noaa.entities.*;
+
+import java.util.*;
 
 @RestController
 public class MuestraController {
@@ -88,5 +89,24 @@ public class MuestraController {
             r.message = "Boya modificada con exito.";
             return ResponseEntity.ok(r);
         }
+    }
+
+    @GetMapping("/muestras/colores/{color}")
+    public ResponseEntity<List<MuestraResponseSegunColor>> traerSegunColor(@PathVariable String color){
+
+        List<Boya> resultado = boyaService.traerByColor(color);
+        List<MuestraResponseSegunColor> lista = new ArrayList<>();
+        MuestraResponseSegunColor m = new MuestraResponseSegunColor();
+        for (Boya boya : resultado) {
+            List<Muestra> listaMuestras = boya.getMuestras(); 
+            for (Muestra muestra : listaMuestras) {
+                m.boyaId = boya.getBoyaId();
+                m.horario = muestra.getHorarioMuestra();
+                m.alturaNivelDelMar = muestra.getAlturaNivelMar();
+                lista.add(m);
+            }    
+        }
+
+        return ResponseEntity.ok(lista);
     }
 }
