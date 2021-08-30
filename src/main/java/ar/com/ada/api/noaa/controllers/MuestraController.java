@@ -109,4 +109,22 @@ public class MuestraController {
 
         return ResponseEntity.ok(lista);
     }
+
+    @GetMapping("/muestras/minima/{idBoya}")
+    public ResponseEntity<MuestraResponseMinima> traerMuestraMinima(@PathVariable Integer idBoya) {
+
+        Boya boya = boyaService.traerById(idBoya);
+        List<Muestra> lista = boya.getMuestras();
+        MuestraResponseMinima m = new MuestraResponseMinima();
+        m.alturaNivelDelMarMinima = 100.00;
+        for (Muestra muestra : lista) {
+            if (muestra.getAlturaNivelMar() < m.alturaNivelDelMarMinima) {
+                m.alturaNivelDelMarMinima = muestra.getAlturaNivelMar();
+                m.color = muestra.getBoya().getColorLuz();
+                m.horario = muestra.getHorarioMuestra();
+            }
+        }
+
+        return ResponseEntity.ok(m);
+    }
 }
