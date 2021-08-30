@@ -116,7 +116,7 @@ public class MuestraController {
         Boya boya = boyaService.traerById(idBoya);
         List<Muestra> lista = boya.getMuestras();
         MuestraResponseMinima m = new MuestraResponseMinima();
-        m.alturaNivelDelMarMinima = 100.00;
+        m.alturaNivelDelMarMinima = lista.get(0).getAlturaNivelMar();
         for (Muestra muestra : lista) {
             if (muestra.getAlturaNivelMar() < m.alturaNivelDelMarMinima) {
                 m.alturaNivelDelMarMinima = muestra.getAlturaNivelMar();
@@ -126,5 +126,24 @@ public class MuestraController {
         }
 
         return ResponseEntity.ok(m);
+    }
+
+    @GetMapping("/muestras/anomalias/{idBoya}")
+    public ResponseEntity<AnomaliaResponse> traerAnomalias(@PathVariable Integer idBoya){
+
+        Boya boya = boyaService.traerById(idBoya);
+        List<Muestra> listaMuestras = boya.getMuestras();
+        Muestra muestra = listaMuestras.get(0);
+        AnomaliaResponse anomalia = new AnomaliaResponse();
+
+        for (Muestra m : listaMuestras) {
+            if((muestra.getAlturaNivelMar()-m.getAlturaNivelMar()) >= 500 || (muestra.getAlturaNivelMar()-m.getAlturaNivelMar()) >= -500 ){
+                anomalia.alturaNivelDelMarActual = m.getAlturaNivelMar();
+                anomalia.horarioInicioAnomalia = muestra.getHorarioMuestra();
+                anomalia.horarioInicioFinAnomalia = m.getHorarioMuestra();
+                anomalia.tipoAlerta = "ALERTA DE IMPACTO";
+            }
+        }
+        return ResponseEntity.ok(anomalia);
     }
 }

@@ -60,3 +60,14 @@ GET /muestras/minima/{idBoya} 	=> devuelve la muestra donde la altura nivel del 
 				“alturaNivelDelMarMinima”: 45,
 				“horario”: “2020-08-04T10:02:02”
 			}
+
+GET /muestras/anomalias/{idBoya}	=> alerta que nos avisa si una anomalía ha sucedido con las boyas. Si se tuvo 2 muestras seguidas donde la diferencia de altura
+entre ambas es de +500 : ALERTA DE IMPACTO
+
+		Resultado Esperado:
+			{
+				“alturaNivelDelMarActual”: 30,
+				“horarioInicioAnomalia”: “2020-08-05T05:05:65”,
+				“horarioInicioFinAnomalia”: “2020-08-05T05:05:65”,
+				“tipoAlerta”: “KAIJU” //Puede ser: KAIJU, IMPACTO
+			}
