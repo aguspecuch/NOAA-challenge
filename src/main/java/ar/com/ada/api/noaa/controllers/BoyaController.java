@@ -12,7 +12,6 @@ import ar.com.ada.api.noaa.models.request.NuevaBoyaInfoRequest;
 import ar.com.ada.api.noaa.models.response.GenericResponse;
 import ar.com.ada.api.noaa.services.BoyaService;
 
-
 @RestController
 public class BoyaController {
 
@@ -28,28 +27,27 @@ public class BoyaController {
         nuevaBoya.setLongitudInstalacion(nuevaBoyaInfo.longitudInstalacion);
         nuevaBoya.setLatitudInstalacion(nuevaBoyaInfo.latitudInstalacion);
         nuevaBoya.setColorLuz("AZUL");
-        
+
         service.crear(nuevaBoya);
-        
+
         r.isOk = true;
         r.id = nuevaBoya.getBoyaId();
         r.message = "Boya creada con exito.";
 
-        
         return ResponseEntity.ok(r);
     }
 
     @GetMapping("/boyas")
-    public ResponseEntity<List<Boya>> traerBoyas(){
+    public ResponseEntity<List<Boya>> traerBoyas() {
 
         return ResponseEntity.ok(service.traerBoyas());
 
     }
 
     @GetMapping("/boyas/{boyaId}")
-    public ResponseEntity<?> traerById(@PathVariable Integer boyaId){
+    public ResponseEntity<?> traerById(@PathVariable Integer boyaId) {
 
-        if(service.traerById(boyaId) == null) {
+        if (service.traerById(boyaId) == null) {
 
             GenericResponse r = new GenericResponse();
             r.isOk = false;
@@ -65,20 +63,27 @@ public class BoyaController {
     }
 
     @PutMapping("/boyas/{boyaId}")
-    public ResponseEntity<?> actualizar(@PathVariable Integer boyaId, @RequestBody ActualizacionBoyaRequest actualizacionBoya){
+    public ResponseEntity<?> actualizar(@PathVariable Integer boyaId,
+            @RequestBody ActualizacionBoyaRequest actualizacionBoya) {
 
         GenericResponse r = new GenericResponse();
 
         Boya boya = service.traerById(boyaId);
-        boya.setColorLuz(actualizacionBoya.color);
-        service.crear(boya);
 
-        r.isOk = true;
-        r.id = boya.getBoyaId();
-        r.message = "Boya actualizada con exito";
+        if (boya == null) {
+            r.isOk = false;
+            r.message = "El id ingresado no corresponde a ninguna boya.";
+            return ResponseEntity.badRequest().body(r);
+        } else {
+            boya.setColorLuz(actualizacionBoya.color);
+            service.crear(boya);
 
-        return ResponseEntity.ok(r);
+            r.isOk = true;
+            r.id = boya.getBoyaId();
+            r.message = "Boya actualizada con exito";
 
-        
+            return ResponseEntity.ok(r);
+        }
+
     }
 }

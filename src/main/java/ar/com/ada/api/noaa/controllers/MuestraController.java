@@ -12,7 +12,7 @@ import ar.com.ada.api.noaa.entities.*;
 
 @RestController
 public class MuestraController {
-    
+
     @Autowired
     MuestraService service;
 
@@ -20,7 +20,7 @@ public class MuestraController {
     BoyaService boyaService;
 
     @PostMapping("/muestras")
-    public ResponseEntity<MuestraResponse> crear(@RequestBody NuevaMuestraRequest nuevaMuestra){
+    public ResponseEntity<MuestraResponse> crear(@RequestBody NuevaMuestraRequest nuevaMuestra) {
 
         Muestra muestra = new Muestra();
         muestra.setAlturaNivelMar(nuevaMuestra.alturaNivelDelMar);
@@ -53,10 +53,9 @@ public class MuestraController {
     }
 
     @GetMapping("muestras/boyas/{idBoya}")
-    public ResponseEntity<?> traerMuestrasSegunBoya(@PathVariable Integer idBoya){
+    public ResponseEntity<?> traerMuestrasSegunBoya(@PathVariable Integer idBoya) {
         Boya boya = boyaService.traerById(idBoya);
         GenericResponse r = new GenericResponse();
-        
 
         if (boya == null) {
             r.isOk = false;
@@ -68,7 +67,7 @@ public class MuestraController {
     }
 
     @DeleteMapping("/muestras/{id}")
-    public ResponseEntity<GenericResponse> delete(@PathVariable Integer id){
+    public ResponseEntity<GenericResponse> delete(@PathVariable Integer id) {
         Muestra muestra = service.traerById(id);
         GenericResponse r = new GenericResponse();
 
