@@ -30,4 +30,18 @@ public class BoyaService {
         return repo.findByColorLuz(color);
     }
 
+    public boolean validarLatitudYLongitud(Boya boya) {
+        
+        Double latitud = boya.getLatitudInstalacion();
+        Double longitud = boya.getLongitudInstalacion();
+        
+        if (latitud > 90 || latitud < -90) {
+			return false;
+		} else if (longitud > 180 || longitud < -180) {
+			return false;
+		} else {
+            return true;
+        }
+
+    }
 }
